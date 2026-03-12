@@ -10,8 +10,12 @@ void print_chars(void)
 	/**
 	 * TODO: Implement function
 	 */
-	(void) v;
-
+	// (void) v;
+	char *chr = (char*)&v;
+	for(int i = 0; i < sizeof(v); i++) {
+		printf("%p -> 0x%hhx\n", chr, *chr);
+		chr++;
+	}
 	printf("-------------------------------\n");
 }
 
@@ -20,7 +24,12 @@ void print_shorts(void)
 	/**
 	 * TODO: Implement function
 	 */
-	(void) v;
+	// (void) v;
+	short *chr = (char*)&v;
+	for(int i = 0; i < sizeof(v); i=i+2) {
+		printf("%p -> 0x%hx\n", chr, *chr);
+		chr = chr + 1;
+	}
 
 	printf("-------------------------------\n");
 }
@@ -30,7 +39,11 @@ void print_ints(void)
 	/**
 	 * TODO: Implement function
 	 */
-	(void) v;
+	int *chr = (char*)&v;
+	for(int i = 0; i < sizeof(v); i=i+4) {
+		printf("%p -> 0x%x\n", chr, *chr);
+		chr = chr + 1;
+	}
 
 	printf("-------------------------------\n");
 }
@@ -40,7 +53,11 @@ void print_long_longs(void)
 	/**
 	 * TODO: Implement function
 	 */
-	(void) v;
+	long long int *chr = (char*)&v;
+	for(int i = 0; i < sizeof(v); i=i+8) {
+		printf("%p -> 0x%llx\n", chr, *chr);
+		chr = chr + 1;
+	}
 
 	printf("-------------------------------\n");
 }
