@@ -35,5 +35,8 @@ char *my_strcpy(char *dest, const char *src)
 	(void) dest;
 	(void) src;
 
+
+	//demo
+
 	return dest;
 }
