@@ -6,37 +6,33 @@
 
 int my_strcmp(const char *s1, const char *s2)
 {
-	/**
-	 * TODO: implement function
-	 */
-	(void) s1;
-	(void) s2;
-
-	return 0x420;
+	while(*s1 != '\0' && *s1 == *s2) {
+		s1++;
+		s2++;
+	}
+	return *(unsigned char*)s1 - *(unsigned char*)s2;
 }
 
 void *my_memcpy(void *dest, const void *src, size_t n)
 {
-	/**
-	 * TODO: implement function
-	 */
-	(void) dest;
-	(void) src;
-	(void) n;
+	unsigned char *d = (unsigned char *)dest;
+    const unsigned char *s = (const unsigned char *)src;
 
-	return dest;
+    for (size_t i = 0; i < n; i++) {
+		*(d + i) = *(s + i);
+    }
+
+    return dest;
 }
 
 char *my_strcpy(char *dest, const char *src)
 {
-	/**
-	 * TODO: implement function
-	 */
-	(void) dest;
-	(void) src;
-
-
-	//demo
+	int i = 0;
+	while(*(src + i) != NULL) {
+		*(dest + i) = *(src + i);
+		i++;
+	}
+	*(dest + i) = '\0';
 
 	return dest;
 }
