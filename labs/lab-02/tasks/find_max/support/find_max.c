@@ -15,21 +15,24 @@ void *find_max(void *arr, int n, size_t element_size,
 	(void) element_size;
 	(void) compare;
 
-	/**
-	 * TODO: Implement function
-	 */
-
+	for (int i = 1; i < n; i++) {
+		void *curent = (char *)arr + i * element_size;
+		if (compare(curent, max_elem)) {
+			max_elem = curent;
+		}
+	}
 	return max_elem;
+
 }
 
 int compare(const void *a, const void *b)
 {
-	(void) a;
-	(void) b;
+	int val_a = *(int*)(a);
+	int val_b = *(int*)(b);
 
-	/**
-	 * TODO: Implement function
-	 */
-
-	return 0x69;
+	if(val_a > val_b) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
