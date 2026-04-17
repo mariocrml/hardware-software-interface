@@ -14,8 +14,8 @@ main:
     push rbp
     mov rbp, rsp
 
-    mov rax, 0xdeadc0de         ; TODO3.1: modify rax register
-    mov rbx, 0x1337ca5e         ; TODO3.1: modify rbx register
+    mov rax, 0        ; TODO3.1: modify rax register
+    mov rbx, 5       ; TODO3.1: modify rbx register
     mov rcx, 0x5                ; hardcoded; DO NOT change
     cmp rax, rbx
     jns bad
@@ -28,10 +28,12 @@ main:
 good:
     PRINTF64 `%s\n\x0`, right
     xor rax, rax
+    jmp exit
 
 bad:
     PRINTF64 `%s\n\x0`, wrong
     xor rax, rax
 
+exit:
     leave
     ret
