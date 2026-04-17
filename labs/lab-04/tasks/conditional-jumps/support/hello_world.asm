@@ -19,8 +19,10 @@ main:
 
     mov rax, 2
     mov r8, 1
+    mov r12, rcx
     cmp rax, r8
-    je print                        ; TODO1: rax > r8?
+    mov rbx, 2
+    jg print                        ; TODO1: rax > r8?
     xor rax, rax
 
     leave
@@ -28,8 +30,20 @@ main:
 
 print:
     PRINTF64 `%s\n\x0`, myString
+    jmp iteration
                                     ; TODO2.2: print "Hello, World!" N times
                                     ; TODO2.1: print "Goodbye, World!"
+    
+    
+    iteration:
+        cmp rbx, r12
+        jg exit
+        inc rbx
+        jmp print
+        jmp iteration
+
+    exit:
+    PRINTF64 "Goodbye, World!"
     xor rax, rax
 
     leave
