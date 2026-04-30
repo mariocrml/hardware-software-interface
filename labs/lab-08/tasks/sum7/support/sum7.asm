@@ -11,6 +11,15 @@ sum7:
     ; TODO: implement the sum7 function
 
     ; TODO: restore the used registers and the stack pointer, if altered
+    xor rax, rax
+    mov rax, [rbp+16]
+    add rax, rdi
+    add rax, rsi 
+    add rax, rdx
+    add rax, rcx
+    add rax, r8
+    add rax, r9
+
 
     leave
     ret
