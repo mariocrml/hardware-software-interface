@@ -15,6 +15,16 @@ print_string_length:
     ; TODO: print the string length
 
     ; TODO: restore the used registers and the stack pointer, if altered
+    sub rsp, 8
+    push rcx
+    mov rcx, rdi
+
+    mov rdi, print_format
+    mov rsi, rcx
+    call printf
+
+    pop rcx
+    add rsp, 8
 
     leave
     ret
