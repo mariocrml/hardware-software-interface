@@ -12,6 +12,6 @@ print_string:
     ; TODO: print the string
 
     ; TODO: restore the used registers and the stack pointer, if altered
-
+    call puts
     leave
     ret
