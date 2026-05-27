@@ -12,4 +12,24 @@ extern printf
 global main
 main:
 	; TODO: Implement the code to count negative and positive numbers in the array
+    push rbp
+    mov rbp, rsp
+
+    mov rcx, ARRAY_SIZE     ; Use rcx as loop counter.
+    xor rbx, rbx            ; Store positive number in rbx.
+    xor rdx, rdx            ; Store negative number in rdx.
+next_element:
+    mov rax, qword [qword_array + rcx*8 - 8]
+    cmp rax, 0
+    jl add_to_neg
+    inc rbx
+    jmp test_end
+add_to_neg:
+    inc rdx
+test_end:
+    loop next_element
+
+    PRINTF64 `Num pos is %u, num neg is %u\n\x0`, rbx, rdx
+
+    leave
     ret
