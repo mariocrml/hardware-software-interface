@@ -28,13 +28,16 @@ print_reverse_array:
 
 next:
     ; TODO1: uncomment the following two lines
-    ; push rcx
+    push rcx
     xor rax, rax
     mov esi, [rbx + 4*rcx - 4]
     mov rdi, format_string
     call printf
-    ; pop rcx
+    pop rcx
     loop next
+
+    ; align the stack to 16 bytes before calling printf
+    sub rsp, 8
 
     xor rax, rax
     mov rdi, newline
@@ -42,6 +45,9 @@ next:
 
     ; restore preserved register
     pop rbx
+
+    ; restore the stack after calling printf
+    add rsp, 8
 
     leave
     ret
@@ -55,8 +61,13 @@ main:
     mov rsi, myarray_len
 
     ; TODO2: Uncomment this function call
-    ; call double_array
+    call double_array
 
+    ; RDI and RSI are scratch registers
+    ; compiling double_array() with -O2 overwrites these registers
+    ; reload the argument data before calling print_reverse_array()
+    mov rdi, myarray
+    mov rsi, myarray_len
     call print_reverse_array
 
     leave
