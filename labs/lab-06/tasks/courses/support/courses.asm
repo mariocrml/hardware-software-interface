@@ -78,5 +78,39 @@ main:
 	mov rbp, rsp
 	PRINTF64 `The students list is:\n\x0`
 	; TODO: Print the list of students and the courses where they are assigned
+    xor rcx, rcx
+final_print:
+    mov rbx, students
+    mov rdx, rcx
+    imul rdx, student_t_size
+    add rbx, rdx
+    mov rax, rbx
+    add rbx, name
+    PRINTF64 `%s ----\x0`, rbx
+
+    mov r8, rax
+    add r8, check
+    xor rbx, rbx
+    mov ebx, dword [r8]
+    cmp rbx, 0
+    jne step
+    PRINTF64 ` %s\n\x0`, unassigned
+    jmp finish
+
+step:
+    mov rbx, rax
+    add rbx, id_course
+    mov rbx, [rbx]
+    mov rsi, courses
+    imul rbx, course_t_size
+    add rsi, rbx
+    add rsi, name_course
+    PRINTF64 ` %s\n\x0`, rsi
+
+finish:
+    inc rcx
+    cmp rcx, [v_students_count]
+    jl final_print
+
     leave
     ret
