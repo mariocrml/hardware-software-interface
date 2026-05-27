@@ -36,10 +36,37 @@ main:
     PRINTF64 `Remainder: %hhu\n\x0`, rbx
 
     ; TODO: Calculate quotient and remainder for dividend2 / divisor2.
+    xor rdx, rdx
+    mov eax, dword [dividend2]
+    mov dx, ax
+    shr eax, 16
+    xchg ax, dx
+    mov bx, word [divisor2]
+    div bx
+
+    xor rbx, rbx
+    mov bx, ax
+    PRINTF64 `Quotient: %hu\n\x0`, rbx
+
+    xor rbx, rbx
+    mov bx, dx
+    PRINTF64 `Remainder: %hu\n\x0`, rbx
 
     ; TODO: Calculate quotient and remainder for dividend3 / divisor3.
+    mov rax, qword [dividend3]
+    xor rdx, rdx
+    mov ebx, dword [divisor3]
+    div ebx
+
+    PRINTF64 `Quotient: %lu\nRemainder: %lu\n\x0`, rax, rdx
 
     ; TODO: Calculate quotient and remainder for dividend4 / divisor4.
+    mov rax, qword [dividend4]
+    mov rdx, qword [dividend4 + 8]
+    mov rbx, qword [divisor4]
+    div rbx
+
+    PRINTF64 `Quotient: 0x%lx\nRemainder: 0x%lx\n\x0`, rax, rdx
 
     leave
     ret
