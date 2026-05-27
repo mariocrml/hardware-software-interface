@@ -17,8 +17,29 @@ main:
     push rbp
     mov rbp, rsp
     ; TODO: Traversing array1 and array2 and putting the result in array3
+    xor rcx, rcx
+iterate_arrays:
+    xor rax, rax
+    xor rbx, rbx
+    xor rdx, rdx
+    mov al, [array1 + rcx]
+    mov bl, [array2 + rcx]
+    mul bl
+    mov word[array3 + rcx * 2], ax
+    inc rcx
+    cmp rcx, 10
+    jl iterate_arrays
+
     PRINTF64 `The array that results from the product of the corresponding elements in array1 and array2 is:\n\x0`
     ; TODO: Traversing array3 and displaying its elements
+    xor rcx, rcx
+    xor rax, rax
+display:
+    PRINTF64 `%hu \x0`, qword [array3 + rcx * 2]
+    inc rcx
+    cmp rcx, 10
+    jl display
+
     PRINTF64 `\n\x0`
     leave
     ret
