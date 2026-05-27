@@ -8,7 +8,6 @@ section .data
 
 array_1 dd 27, 46, 55, 83, 84
 array_2 dd 1, 4, 21, 26, 59, 92, 105
-array_output times 12 dd 0
 
 
 section .text
@@ -19,61 +18,93 @@ main:
     push rbp
     mov rbp, rsp
 
-    mov rax, 0 ; counter used for array_1
-    mov rbx, 0 ; counter used for array_2
-    mov rcx, 0 ; counter used for the output array
+    sub rsp, 4 * ARRAY_1_LEN
+    and rsp, -16  ;; Align the stack to 16 bytes
+
+    mov rdi, 0
+copy_array_1_to_stack:
+    mov ecx, [array_1 + 4 * rdi]
+    mov [rsp + 4 * rdi], ecx
+    inc rdi
+    cmp rdi, ARRAY_1_LEN
+    jl copy_array_1_to_stack
+
+    mov r8, rsp
+
+    sub rsp, 4 * ARRAY_2_LEN
+    and rsp, -16  ;; Align the stack to 16 bytes
+
+    mov rdi, 0
+copy_array_2_to_stack:
+    mov ecx, [array_2 + 4 * rdi]
+    mov [rsp + 4 * rdi], ecx
+    inc rdi
+    cmp rdi, ARRAY_2_LEN
+    jl copy_array_2_to_stack
+
+    mov r9, rsp
+
+    sub rsp, 4 * ARRAY_OUTPUT_LEN
+    and rsp, -16  ;; Align the stack to 16 bytes
+    mov r10, rsp
+
+    mov rax, 0
+    mov rbx, 0
+    mov rcx, 0
 
 merge_arrays:
-    mov edx, [array_1 + 4 * rax]
-    cmp edx, [array_2 + 4 * rbx]
-    jg array_2_lower
-array_1_lower:
-    mov [array_output + 4 * rcx], edx
-    inc rax
-    inc rcx
-    jmp verify_array_end
-array_2_lower:
-    mov edx, [array_2 + 4 * rbx]
-    mov [array_output + 4 * rcx], edx
-    inc rcx
-    inc rbx
-
-verify_array_end:
     cmp rax, ARRAY_1_LEN
     jge copy_array_2
     cmp rbx, ARRAY_2_LEN
     jge copy_array_1
+
+    mov edx, [r8 + 4 * rax]
+    mov edi, [r9 + 4 * rbx]
+    cmp edx, edi
+    jg array_2_lower
+array_1_lower:
+    mov [r10 + 4 * rcx], edx
+    inc rax
+    inc rcx
+    jmp merge_arrays
+array_2_lower:
+    mov [r10 + 4 * rcx], edi
+    inc rbx
+    inc rcx
     jmp merge_arrays
 
 copy_array_1:
-    mov edx, [array_1 + 4 * rax]
-    mov [array_output + 4 * rcx], edx
-    inc rcx
-    inc rax
     cmp rax, ARRAY_1_LEN
-    jb copy_array_1
-    jmp print_array
-copy_array_2:
-    mov edx, [array_2 + 4 * rbx]
-    mov [array_output + 4 * rcx], edx
+    jge print_array
+    mov edx, [r8 + 4 * rax]
+    mov [r10 + 4 * rcx], edx
+    inc rax
     inc rcx
-    inc rbx
+    jmp copy_array_1
+
+copy_array_2:
     cmp rbx, ARRAY_2_LEN
-    jb copy_array_2
+    jge print_array
+    mov edx, [r9 + 4 * rbx]
+    mov [r10 + 4 * rcx], edx
+    inc rbx
+    inc rcx
+    jmp copy_array_2
 
 print_array:
     PRINTF64 `Array merged:\n\x0`
-    mov rcx, 0
+    xor rcx, rcx
+
 print:
-    mov eax, [array_output + 4 * rcx]
-    PRINTF64 `%d \x0`, rax
+    mov edx, [r10 + 4 * rcx]
+    PRINTF64 `%d \x0`, rdx
     inc rcx
     cmp rcx, ARRAY_OUTPUT_LEN
     jb print
 
     PRINTF64 `\n\x0`
     xor rax, rax
-
     mov rsp, rbp
-    pop rbp
+
+    leave
     ret
