@@ -12,7 +12,7 @@ static void bye(void)
 	puts("Bye!");
 }
 
-int my_main(void)
+int main(void)
 {
 	hi();
 	bye();

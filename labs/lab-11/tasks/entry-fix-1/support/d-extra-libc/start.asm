@@ -1,7 +1,7 @@
 ; SPDX-License-Identifier: BSD-3-Clause
 
 extern __libc_start_main
-extern main
+extern my_main
 
 section .text
 
@@ -20,7 +20,7 @@ _start:
     push rax
     push rsp
 
-    mov rdi, main
+    mov rdi, my_main
     call __libc_start_main
 
     hlt

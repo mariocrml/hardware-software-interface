@@ -1,6 +1,6 @@
 ; SPDX-License-Identifier: BSD-3-Clause
 
-extern main
+extern my_main
 
 section .text
 
@@ -10,7 +10,7 @@ __NR_exit equ 60
 global _start
 
 _start:
-    call main
+    call my_main
 
     ; Call __NR_exit(main_return_value) (system call).
     ;
