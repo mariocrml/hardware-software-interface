@@ -7,7 +7,7 @@ section .data
     arr: dd 19, 7, 129, 87, 54, 218, 67, 12, 19, 99
     len: equ $-arr
 
-    fmt: db "max: %u", 10, 0
+    fmt: db "max: %u on position: %u", 10, 0
 
 section .bss
     ; we are _reserving_ space for a double word (4 bytes)
@@ -21,6 +21,10 @@ global main
 main:
     push ebp
     mov ebp, esp
+
+    ; push 3rd argument on the stack
+    mov eax, pos
+    push eax
 
     ; push 2nd argument on the stack
     ; NOTE: len is the total array size; we want the number of elements
@@ -36,6 +40,10 @@ main:
 
     ; print maximum value and its position
     ; NOTE: EAX holds the return value of get_max()
+    ; NOTE: pos written by get_max() at given memory address
+    mov ecx, dword [pos]
+    push ecx
+
     push eax
 
     mov eax, fmt
