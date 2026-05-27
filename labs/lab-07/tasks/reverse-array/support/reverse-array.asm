@@ -16,7 +16,18 @@ main:
     mov rbp, rsp
 
     ; TODO push the elements of the array on the stack
+    push ARRAY_LEN
+    pop rcx
+push_elem:
+    push qword [input + 8 * (rcx - 1)]
+    loop push_elem
+
     ; TODO retrieve the elements (pop) from the stack into the output array
+    push ARRAY_LEN
+    pop rcx
+pop_elem:
+    pop qword [output + 8 * (rcx - 1)]
+    loop pop_elem
 
     PRINTF64 `Reversed array: \n\x0`
     xor rcx, rcx
