@@ -38,9 +38,12 @@ gcd_end:
 print:
 
     ; TODO 1: solve the 'Segmentation fault!' error
+    pop rdx
+    pop rbx
 
     ; TODO 2: print the result in the form of: "gdc(rax, rdx)=7" with PRINTF64 macro
     ; output value in rax
+    PRINTF64 `gcd(%ld, %ld) = %ld\n\x0`, rbx, rdx, rax
 
     xor rax, rax
 
