@@ -13,7 +13,14 @@ main:
     mov rbx, 4
 
     ; TODO: get maximum value. You are only allowed to use one conditional jump and push/pop instructions.
+    cmp rax, rbx
+    ja print_max
+    push rax
+    push rbx
+    pop rax
+    pop rbx
 
+print_max:
     PRINTF64 `Max value is: %ld\n\x0`, rax ; print maximum value
 
     mov rsp, rbp
