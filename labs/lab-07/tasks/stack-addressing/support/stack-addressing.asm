@@ -7,34 +7,63 @@ section .text
 extern printf
 global main
 main:
+    sub rsp, 8
+    mov qword [rsp], rbp
     mov rbp, rsp
 
     ; TODO 1: replace every "push" instruction by an equivalent sequence of commands (use direct addressing of memory. Hint: rsp)
     mov rcx, NUM
 push_nums:
-    push rcx
+    sub rsp, 8
+    mov qword [rsp], rcx
     loop push_nums
 
-    push 0
+    and rsp, -16  ;; Align the stack to 16 bytes
+
+    sub rsp, 8
+    mov qword [rsp], 0
+
+    sub rsp, 8
     mov rax, "handsome"
-    push rax
+    mov qword [rsp], rax
+
+    sub rsp, 8
     mov rax, "is very "
-    push rax
+    mov qword [rsp], rax
+
+    sub rsp, 8
     mov rax, "Anthony "
-    push rax
+    mov qword [rsp], rax
 
     lea rsi, [rsp]
     PRINTF64 `%s\n\x0`, rsi
 
     ; TODO 2: print the stack in "address: value" format in the range of [RSP:RBP]
     ; use PRINTF64 macro - see format above
+    mov rax, rbp
+print_stack:
+    PRINTF64 `0x%x: 0x%x\n\x0`, rax, qword [rax]
+    sub rax, 8
+    cmp rax, rsp
+    jge print_stack
 
     ; TODO 3: print the string
+    lea rsi, [rsp]
+    PRINTF64 `%s\n\x0`, rsi
 
     ; TODO 4: print the array on the stack, element by element.
+    lea rax, [rsp + 40]
+print_array:
+    PRINTF64 `%d \x0`, qword [rax]
+    add rax, 8
+    cmp rax, rbp
+    jl print_array
+    PRINTF64 `\n\x0`
 
     ; restore the previous value of the rbp (Base Pointer)
     mov rsp, rbp
+    mov rbp, qword [rsp]
+    add rsp, 8
 
     ; exit without errors
     xor rax, rax
