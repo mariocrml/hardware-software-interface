@@ -11,6 +11,7 @@ section .text
 ;   TODO: Add the missing instruction
 print_hello:
     push rbp
+    mov rbp, rsp
 
     xor rax, rax
     mov rdi, message
